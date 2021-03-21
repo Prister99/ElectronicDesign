@@ -1,5 +1,5 @@
 <MySpace>
-    number:number
+    recipient:recipient
     GridLayout:
         cols:1
         size:root.width, root.height
@@ -8,9 +8,16 @@
             Label:
                 text: "Number: "
             TextInput:
-                id:number
-                multiline:False
+                id: recipient
+                multiline: False
+                on_text_validate: message.focus = True
 
         Button:
             text: "Send coordinates: "
+            sms_recipient: recipient.text
+            sms_message: root.gps_location
+            size_hint_y: None
+            height: sp(40)
             on_press:root.btn()
+            on_release: self.send_sms()
+            

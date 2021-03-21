@@ -19,7 +19,6 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.theming import ThemeManager
 from plyer import sms
-from jnius import autoclass, java_method, PythonJavaClass
 
 
 Config.set('graphics', 'width',150)
@@ -32,7 +31,7 @@ acc = "";
 
         
 class MySpace(Widget):
-    number = ObjectProperty(None)
+    recipient = ObjectProperty(None)
 
     def onLocationChanged(self, location):
         self.root.on_location(
@@ -43,19 +42,11 @@ class MySpace(Widget):
     gps_location = StringProperty()
     gps_status = StringProperty('Click Start to get GPS location updates')
 
-    def btn(self):
-        self.onLocationChanged()
-
-
-"""  def __init__(self, **kwargs):
-    self.cols=4
-    super(MyWidgets, self).__init__(**kwargs)
-    self.add_widget(Label(text='Number: '))
-    self.number = TextInput(multiline = False)
-    self.add_widget(self.number)
-    self.send =Button(text="Send", font_size=40)
-    self.send.bind(on_press=self.pressbutton)
-    self.add_widget(self.send) """
+    def btn(self,sms_message,sms_recipient):
+        sms_recipient = StringProperty()
+        sms_message = StringProperty()
+        def send_sms(self, *args):
+            sms.send(recipient=self.sms_recipient, message=self.sms_message)
    
 
 class MainApp(App):
@@ -63,6 +54,9 @@ class MainApp(App):
     def build(self):
         title = "Tcontrol"
         return MySpace()
+
+    def on_pause(self):
+        return True
     
     def on_pause(self):
         gps.stop()
@@ -71,24 +65,6 @@ class MainApp(App):
     def on_resume(self):
         gps.start(3000, 0)
         pass
-    recipient = 9999222299
-    message = 'This is an example.'
-    sms.send(recipient=recipient, message=message)
-    class Sms:
-        '''
-    Sms facade.
-    '''
-    def send(self, recipient, message):
-        '''
-        Send SMS or open SMS interface.
-        :param recipient: The receiver
-        :param message: the message
-        :type recipient: number
-        :type message: str
-        '''
-        self._send(recipient=recipient, message=message)
-
-    # private
 
     def _send(self, **kwargs):
         raise NotImplementedError()
