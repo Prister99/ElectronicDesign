@@ -23,6 +23,6 @@
             text: "GPS Coordinates "
             size_hint_y: None
             height: sp(40)
-            on_press:root.on_start()
+            on_press:app.check_gps_permissions() + root.on_start()
             
             

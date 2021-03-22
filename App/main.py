@@ -23,11 +23,15 @@ from plyer import sms
 Config.set('graphics', 'width',150)
 Config.set('graphics', 'height',150)
 
+
 class MainApp(App):
     lat = "";
     ln = "";
     time = "";
     acc = "";
+    if platform == 'android':
+            from android.permissions import Permission, request_permissions
+            request_permissions([Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION], callback)
 
     def build(self):
         title = "Tcontrol"
@@ -40,7 +44,7 @@ class MySpace(Widget):
     recipient = ObjectProperty(None)
     def on_start(self):
         gps.configure(on_location=self.on_gps_location)
-        gps.start()
+        gps.start(minTime=5000, minDistance=0)
         def on_gps_location(self, **kwargs):
             lat = str(kwargs['lat'])
             ln = str(kwargs['lon'])
