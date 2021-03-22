@@ -11,13 +11,18 @@
                 id: recipient
                 multiline: False
                 on_text_validate: message.focus = True
-
+            Label:
+                text: "Coordinates: " + app.lat + app.ln
         Button:
-            text: "Send coordinates: "
+            text: "Send coordinates "
             sms_recipient: recipient.text
-            sms_message: root.gps_location
             size_hint_y: None
             height: sp(40)
-            on_press:root.btn()
             on_release: self.send_sms()
+        Button:
+            text: "GPS Coordinates "
+            size_hint_y: None
+            height: sp(40)
+            on_press:root.on_start()
+            
             
