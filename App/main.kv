@@ -1,28 +1,28 @@
 <MySpace>
-    recipient:recipient
     GridLayout:
         cols:1
         size:root.width, root.height
         GridLayout:
-            cols:2
+            cols:1
             Label:
-                text: "Number: "
+                id: message
+                text: app.gps_location
+            Label:
+                text: app.gps_status
             TextInput:
                 id: recipient
                 multiline: False
                 on_text_validate: message.focus = True
-            Label:
-                text: "Coordinates: " + app.lat + app.ln
-        Button:
-            text: "Send coordinates "
-            sms_recipient: recipient.text
-            size_hint_y: None
-            height: sp(40)
-            on_release: self.send_sms()
-        Button:
-            text: "GPS Coordinates "
-            size_hint_y: None
-            height: sp(40)
-            on_press:app.check_gps_permissions() + root.on_start()
-            
+            ToggleButton:
+                text: 'Start' if self.state == 'normal' else 'Stop'
+                on_state:
+                    app.start(500000,0) if self.state == 'down' else \
+                    app.stop()
+            IntentButton:
+                sms_recipient: recipient.text
+                sms_message: app.gps_location
+                text: 'Send SMS'
+                size_hint_y: None
+                height: sp(40)
+                on_release: self.send_sms()
             
