@@ -30,7 +30,7 @@ class MainApp(App):
     lat = "";
     ln = "";
     tmstmp = "";
-    minTime = 500000;
+    minTime = 5000;
     gps_location = StringProperty()
     gps_status = StringProperty('Click Start to get GPS location updates')
     
@@ -88,7 +88,7 @@ class MainApp(App):
         return True
 
     def on_resume(self):
-       gps.start(500000, 0)
+       gps.start(5000, 0)
        pass
 
     def on_pause(self):

@@ -16,7 +16,7 @@
             ToggleButton:
                 text: 'Start' if self.state == 'normal' else 'Stop'
                 on_state:
-                    app.start(500000,0) if self.state == 'down' else \
+                    app.start(5000,0) if self.state == 'down' else \
                     app.stop()
             IntentButton:
                 sms_recipient: recipient.text
