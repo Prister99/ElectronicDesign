@@ -21,10 +21,11 @@ from kivymd.app import MDApp
 from kivymd.theming import ThemeManager
 from plyer import sms
 import json
+from ligotimegps import LIGOTimeGPS
+
 
 Config.set('graphics', 'width',150)
 Config.set('graphics', 'height',150)
-
 
 class MainApp(App):
     lat = "";
@@ -73,11 +74,11 @@ class MainApp(App):
 
     def stop(self):
         gps.stop()
-
-    @mainthread
+    
+    @mainthread    
     def on_location(self, **kwargs):
         self.gps_location = '\n'.join([
-            '{}={}'.format(k, v) for k, v in kwargs.items()])
+            '{}={}'.format(k, v) for k, v in kwargs.items()]) 
 
     @mainthread
     def on_status(self, stype, status):
@@ -86,10 +87,6 @@ class MainApp(App):
     def on_pause(self):
         gps.stop()
         return True
-
-    def on_resume(self):
-       gps.start(5000, 0)
-       pass
 
     def on_pause(self):
         return True
@@ -108,3 +105,4 @@ class IntentButton(Button):
 
 if __name__ == '__main__':
     MainApp().run()
+   
