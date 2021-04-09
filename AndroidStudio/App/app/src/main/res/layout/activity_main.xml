@@ -9,11 +9,13 @@
     android:padding="16dp"
     android:gravity="center"
     tools:context=".MainActivity">
-    <Button
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bt_location"
-        android:text="Get Location"/>
+        android:onClick="validarSW"
+        android:checked="false"
+        android:id="@+id/sw_location"
+        android:text="Get Location" />
 
     <TextView
         android:layout_width="wrap_content"
