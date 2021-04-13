@@ -23,6 +23,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
     TextView lat,lng,tms;
     FusedLocationProviderClient fusedLocationProviderClient;
     Boolean SWST;
-    String IP= "191.108.168.10";
+    EditText IP;
+    String IP2;
     Integer PORT= 13550;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         lng = (TextView) findViewById(R.id.text_lng);
         tms = (TextView) findViewById(R.id.text_tms);
 
+
         //Initialize fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
     }
@@ -72,16 +76,19 @@ public class MainActivity extends AppCompatActivity {
         //Check condition
         SWST = swLocation.isChecked();
         if (ActivityCompat.checkSelfPermission(MainActivity.this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && SWST){
+                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED&& SWST){
 
+            
             getCurrentLocation();
 
         }else{
-
             //When permission is denied
             //Request permission
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},100);
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET},100);
+            finish();
+            System.exit(0);
         }
     }
     @SuppressLint("MissingPermission")
@@ -89,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //Initialize location manager
         LocationManager locationManager = (LocationManager) getSystemService(
                 Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 //Set Lat on TextView
@@ -102,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 tms.setText(sdf.format(date));
                 SendData();
-                System.out.println("dsjfks");
+
             }
 
         });
@@ -112,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    String IP2 = ((EditText) findViewById(R.id.phone)).getText().toString();
                     DatagramSocket udpSocket = new DatagramSocket(PORT);
-                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    InetAddress serverAddr = InetAddress.getByName(IP2);
                     byte[] buf = ("'"+lng.getText().toString()+"', '"+lat.getText().toString()+"', '"+tms.getText().toString()+"'").getBytes();
                     DatagramPacket packet = new DatagramPacket(buf, buf.length,serverAddr, PORT);
                     udpSocket.send(packet);

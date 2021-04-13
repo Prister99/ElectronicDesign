@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+    <%- include ('partials/head.html') %>
+    
+    <style>
+    #map { 
+     width: 100%;
+     height: 480px;
+     box-shadow: 5px 5px 5px #888;
+  }
+  table {
+   width: 100%;
+   border: 1px solid #000;
+  }
+  th, td {
+    width: 25%;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    padding: 0.3em;
+  }
+  caption {
+    padding: 0.3em;
+  }
+    </style>
+</head>
+<body>
+
+<%- include ('partials/navigation.html') %>
+
+<div id="map">
+
+<%- include ('map/map.html') %> 
+
+</div>
+
+<div>
+  <table>
+    <tr>
+      <td><h1>Latitud</h1></td>
+      <td><h1>Longitud</h1></td>
+      <td><h1>Timestamp</h1></td>
+    </tr>
+    <tr>
+      <td><p id="lat"> Lose</p></td>
+      <td><p id="lng"> Lose</p></td>
+      <td><p id="tmp"> Lose</p></td>
+    </tr>
+  </table>
+  
+  <script>
+      var lat = document.getElementById("lat");
+      var lng = document.getElementById("lng");
+      var tmp = document.getElementById("tmp");
+  </script>
+
+</div>
+</body>
+
+</html>

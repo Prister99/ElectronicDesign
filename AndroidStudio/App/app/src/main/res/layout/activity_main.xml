@@ -9,12 +9,13 @@
     android:padding="16dp"
     android:gravity="center"
     tools:context=".MainActivity">
+
     <Switch
+        android:id="@+id/sw_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="validarSW"
         android:checked="false"
-        android:id="@+id/sw_location"
+        android:onClick="validarSW"
         android:text="Get Location" />
 
     <TextView
@@ -65,4 +66,10 @@
         android:text="0.0"
         android:textSize="24sp" />
 
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="IP" />
 </LinearLayout>

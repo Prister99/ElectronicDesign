@@ -1,0 +1,62 @@
+<!--Map Script-->
+
+<script>
+
+var map = L.map('map').setView([ 8.75, -75.883],14);
+
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+maxZoom: 15,
+id: 'mapbox/streets-v11',
+tileSize: 512,
+zoomOffset: -1,
+accessToken: 'pk.eyJ1IjoiY2FtaWxvYW5kcmVzcyIsImEiOiJja25kZTYxMHoxMzJvMm5sbDVkaWY0MG01In0.DDjmbkBm39YxbFYyPVyTnA'}).addTo(map);
+
+L.control.scale().addTo(map);
+ 
+var marker = L.marker([0,0], { draggable: true }).addTo(map)
+
+var polyline = new L.Polyline([["0","0"]], {
+    color: 'red',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+}).addTo(map);
+
+polyline.addTo(map)
+var ltlng= Array(0)
+
+function update(){
+
+        fetch("http://prister.ddns.net:13555/live")
+         .then((response) => response.json())
+         .then((data) => {
+         const {rows} = data
+         const {Longitud, Latitud, Timestamp} = rows[0]
+         lat.innerHTML=rows[0].Latitud
+         lng.innerHTML=rows[0].Longitud
+         tmp.innerHTML=rows[0].Timestamp
+         ltlng.push([Latitud,Longitud])
+         marker.setLatLng([Latitud,Longitud])
+         var markerBounds = L.latLngBounds(ltlng);
+         map.fitBounds(markerBounds);
+         polyline.setLatLngs([ltlng]);
+         console.log(Latitud+" "+ Longitud+ " "+ Timestamp)
+          })
+         .catch((e) => console.log(e));
+}
+
+
+
+setInterval("update()", 2000);
+window.addEventListener("load",update)
+var popup = L.popup().setLatLng()
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent(e.latlng.toString())
+        .openOn(map);
+}
+map.on('click', onMapClick);
+
+</script>   
