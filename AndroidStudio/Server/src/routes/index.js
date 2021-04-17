@@ -17,7 +17,7 @@ router.get('/live',async(req,res)=>{
     pgconnection.query('SELECT "Longitud","Latitud","Timestamp" FROM "Coordenadas" order by id desc limit 1', async(err, rows, fields) => {
         try{
             if (!err) {
-                await res.json(rows)
+                res.json(rows)
                 let data = res.json(rows)
                 console.log(data)
             } else {
@@ -31,5 +31,25 @@ router.get('/live',async(req,res)=>{
 }
 })
 
+router.get('/api/:id',(req,res)=>{
+    try{
+        var {id} = req.params
+        id = id.split(";")
+        const start = id[0].split("T").join(" ")
+        const end = id[1].split("T").join(" ")
+
+        pgconnection.query(`SELECT * FROM "Coordenadas" WHERE "Timestamp" >=\'${start}\' AND "Timestamp"<=\'${end}\';`, async(err, rows, fields) => {
+            try{
+                if (!err) {
+                    res.json(rows)             
+                } else {
+                    console.log(err)
+                }
+            }catch{(err)=> console.log(err)
+            }
+            })
+    }catch{(err)=> console.log(err)
+    }
+    })
 
 module.exports = router

@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             //Request permission
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET},100);
+            onPause();
             finish();
             System.exit(0);
         }
