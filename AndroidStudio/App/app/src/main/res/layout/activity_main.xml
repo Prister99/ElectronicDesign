@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:checked="false"
         android:onClick="validarSW"
-        android:text="Get Location" />
+        android:text="Get Location"
+        tools:targetApi="ice_cream_sandwich" />
 
     <TextView
         android:layout_width="wrap_content"

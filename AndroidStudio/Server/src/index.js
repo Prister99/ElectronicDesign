@@ -6,7 +6,7 @@ const path = require('path')
 // procces.env.PORT ||
 
 // settings
-app.set('port', 80)
+app.set('port', 13555)
 app.set('view engine', 'ejs')
 app.set('json spaces',2)
 app.set('views',path.join(__dirname, 'views'))

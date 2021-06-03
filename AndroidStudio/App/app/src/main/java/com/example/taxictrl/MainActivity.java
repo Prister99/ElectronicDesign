@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED&& SWST){
 
-            
+            onResume();
             getCurrentLocation();
 
         }else{
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         //Initialize location manager
         LocationManager locationManager = (LocationManager) getSystemService(
                 Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000, 0, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 //Set Lat on TextView
@@ -134,5 +134,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-    }
+    }}
 }

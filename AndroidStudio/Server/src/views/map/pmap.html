@@ -1,0 +1,98 @@
+<!--Mapboxgl map-->
+
+<script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY2FtaWxvYW5kcmVzcyIsImEiOiJja25kZTYxMHoxMzJvMm5sbDVkaWY0MG01In0.DDjmbkBm39YxbFYyPVyTnA'
+      var map = new mapboxgl.Map({
+      container: 'map', // Container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // Map style to use
+      center: [-75.883, 8.75], // Starting position [lng, lat]
+      zoom: 12, // Starting zoom level
+    });
+    
+
+    var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+    accessToken: mapboxgl.accessToken, // Set the access token
+    mapboxgl: mapboxgl, // Set the mapbox-gl instance
+    marker: false, // Do not use the default marker style
+    placeholder: 'Search for places', // Placeholder text for the search bar
+    bbox: [-78.883,8.55,-74,8.99], // Boundary for Berkeley
+    proximity: {
+    longitude: -75.883,
+    latitude: 8.75
+  }
+    });
+
+    // Add the geocoder to the map
+    map.addControl(geocoder);
+
+    map.on('load', function() {
+    map.addSource('single-point', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: []
+    }
+    
+    });
+
+  map.addLayer({
+    id: 'point',
+    source: 'single-point',
+    type: 'circle',
+    paint: {
+      'circle-radius': 50,
+      'circle-color': '#448ee4'
+    }
+  });
+
+  // Listen for the `result` event from the Geocoder
+  // `result` event is triggered when a user makes a selection
+  //  Add a marker at the result's coordinates
+  geocoder.on('result', async function(e) {
+    console.log(e.result.center[0])
+    var lnmin= e.result.center[0]+ 0.00888
+    var lnmax=e.result.center[0]-0.00888
+    var ltmin=e.result.center[1]-0.01105
+    var ltmax=e.result.center[1]+0.01105
+    console.log(lnmin)
+    const response =await fetch(`http://prister.ddns.net:13555/api/place/${lnmin};${lnmax};${ltmin};${ltmax}`)  
+    const data = await response.json()
+    const {rows} = data
+    console.log(data)
+    var ltlnh=Array(rows.length)
+    for (let i = 0; i < rows.length; i++) {
+        ltlnh[i]=[rows[i].Longitud,rows[i].Latitud]      
+     
+    }
+    console.log(ltlnh)
+    map.addSource('route', {
+    type: 'geojson',
+    lineMetrics: true,
+    data: {
+    type: 'Feature',
+    properties: {},
+    geometry: {
+    type: 'LineString',
+    coordinates: [ltlnh]
+        }
+      }
+    });
+    console.log(map.getSource('route'))
+    map.addLayer({
+    id: 'route',
+    type: 'line',
+    source: 'route',
+    paint: {
+    'line-color': '#F7455D',
+    'line-width': 5
+      }
+    });
+    map.getSource('single-point').setData(e.result.geometry);
+    
+    
+
+  });
+});
+
+
+  </script>

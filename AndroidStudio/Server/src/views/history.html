@@ -124,12 +124,14 @@ document.getElementById('search').onclick = async function(){
   if(minute<10){
     minute='0'+minute //agrega cero si el menor de 10
   }
+  
   var fecha2 =new Date($('#datetimepicker2').data('DateTimePicker').date())
   var month2 = fecha2.getMonth()+1; //obteniendo mes
   var day2 = fecha2.getDate(); //obteniendo dia
   var hour2 = fecha2.getHours(); // obteniendo hora
   var year2 = fecha2.getFullYear(); //obteniendo año
   var minute2 = fecha2.getMinutes(); // obteniendo minutos
+
   if(day2<10){
     day2='0'+day2; //agrega cero si el año menor de 10
           
@@ -158,7 +160,6 @@ document.getElementById('search').onclick = async function(){
   var ltlnh=Array(rows.length)
   for (let i = 0; i < rows.length; i++) {
     ltlnh[i]=[rows[i].Latitud, rows[i].Longitud]
-   
   }
   $(".leaflet-marker-icon").remove();
   map.setView(ltlnh[ltlnh.length-1])

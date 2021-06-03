@@ -28,7 +28,7 @@ var ltlng= Array(0)
 
 function update(){
 
-        fetch("http://prister.ddns.net:13555/live")
+        fetch("http://prister.ddns.net:13555/api/live")
          .then((response) => response.json())
          .then((data) => {
          const {rows} = data
